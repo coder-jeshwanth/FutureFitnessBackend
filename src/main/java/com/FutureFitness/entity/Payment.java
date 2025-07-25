@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -26,8 +27,25 @@ public class Payment {
     @Column(nullable = false)
     private LocalDateTime paymentDate;
 
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subscription_id")
+    private Subscription subscription;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trainer_id")
+    private Staff trainer;
+
     @PrePersist
     protected void onCreate() {
-        paymentDate = LocalDateTime.now();
+        if (paymentDate == null) {
+            paymentDate = LocalDateTime.now();
+        }
     }
 }

@@ -27,9 +27,6 @@ public class Branch {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by")
-    private Staff createdBy;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;

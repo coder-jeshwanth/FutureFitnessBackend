@@ -1,6 +1,5 @@
 package com.FutureFitness.entity;
 
-import com.FutureFitness.enums.MembershipStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -30,10 +29,6 @@ public class Member {
 
     @Column(nullable = false)
     private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private MembershipStatus membershipStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id", nullable = false)

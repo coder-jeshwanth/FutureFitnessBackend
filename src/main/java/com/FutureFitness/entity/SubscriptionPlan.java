@@ -39,6 +39,9 @@ public class SubscriptionPlan {
     @JoinColumn(name = "created_by")
     private Staff createdBy;
 
+    @Column(name = "created_by_role")
+    private String createdByRole; // Added this field to store the staff's role name
+
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
