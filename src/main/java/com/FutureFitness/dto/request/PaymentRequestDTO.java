@@ -16,7 +16,7 @@ public class PaymentRequestDTO {
     private PaymentMode paymentMode;
     private LocalDateTime paymentDate;
     private BigDecimal amount;
-    private Long memberId;
+    private Long userId; // Changed from memberId to userId
     private Long subscriptionId; // nullable
-    private Long trainerId; // nullable
+    private Long trainerId; // Still needed to identify the trainer user
 }

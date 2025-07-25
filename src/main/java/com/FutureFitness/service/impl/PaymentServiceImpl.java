@@ -2,15 +2,13 @@ package com.FutureFitness.service.impl;
 
 import com.FutureFitness.dto.request.PaymentRequestDTO;
 import com.FutureFitness.dto.response.PaymentResponseDTO;
-import com.FutureFitness.entity.Member;
 import com.FutureFitness.entity.Payment;
-import com.FutureFitness.entity.Staff;
 import com.FutureFitness.entity.Subscription;
+import com.FutureFitness.entity.User;
 import com.FutureFitness.exception.ResourceNotFoundException;
-import com.FutureFitness.repository.MemberRepository;
 import com.FutureFitness.repository.PaymentRepository;
-import com.FutureFitness.repository.StaffRepository;
 import com.FutureFitness.repository.SubscriptionRepository;
+import com.FutureFitness.repository.UserRepository;
 import com.FutureFitness.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,19 +18,16 @@ import org.springframework.stereotype.Service;
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final SubscriptionRepository subscriptionRepository;
-    private final StaffRepository staffRepository;
 
     @Autowired
     public PaymentServiceImpl(PaymentRepository paymentRepository,
-                             MemberRepository memberRepository,
-                             SubscriptionRepository subscriptionRepository,
-                             StaffRepository staffRepository) {
+                             UserRepository userRepository,
+                             SubscriptionRepository subscriptionRepository) {
         this.paymentRepository = paymentRepository;
-        this.memberRepository = memberRepository;
+        this.userRepository = userRepository;
         this.subscriptionRepository = subscriptionRepository;
-        this.staffRepository = staffRepository;
     }
 
     @Override
@@ -42,12 +37,12 @@ public class PaymentServiceImpl implements PaymentService {
             throw new IllegalArgumentException("Either subscriptionId or trainerId must be provided");
         }
 
-        // Fetch Member by memberId (mandatory)
-        Member member = memberRepository.findById(paymentRequestDTO.getMemberId())
+        // Fetch User by userId (mandatory)
+        User user = userRepository.findById(paymentRequestDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Member",
+                        "User",
                         "id",
-                        paymentRequestDTO.getMemberId())
+                        paymentRequestDTO.getUserId())
                 );
 
         // Fetch Subscription by subscriptionId (if provided)
@@ -61,12 +56,12 @@ public class PaymentServiceImpl implements PaymentService {
                     );
         }
 
-        // Fetch Staff (trainer) by trainerId (if provided)
-        Staff trainer = null;
+        // Fetch User (trainer) by trainerId (if provided)
+        User trainer = null;
         if (paymentRequestDTO.getTrainerId() != null) {
-            trainer = staffRepository.findById(paymentRequestDTO.getTrainerId())
+            trainer = userRepository.findById(paymentRequestDTO.getTrainerId())
                     .orElseThrow(() -> new ResourceNotFoundException(
-                            "Trainer (Staff)",
+                            "Trainer (User)",
                             "id",
                             paymentRequestDTO.getTrainerId())
                     );
@@ -77,7 +72,7 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setPaymentMode(paymentRequestDTO.getPaymentMode());
         payment.setPaymentDate(paymentRequestDTO.getPaymentDate());
         payment.setAmount(paymentRequestDTO.getAmount());
-        payment.setMember(member);
+        payment.setUser(user);
         payment.setSubscription(subscription);
         payment.setTrainer(trainer);
 

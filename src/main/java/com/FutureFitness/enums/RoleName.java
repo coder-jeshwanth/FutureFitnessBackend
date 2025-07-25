@@ -4,5 +4,6 @@ public enum RoleName {
     ADMIN,
     MANAGER,
     TRAINER,
-    RECEPTIONIST
+    RECEPTIONIST,
+    MEMBER
 }

@@ -3,12 +3,12 @@ package com.FutureFitness.service.impl;
 import com.FutureFitness.dto.request.SubscriptionPlanRequestDTO;
 import com.FutureFitness.dto.response.SubscriptionPlanResponseDTO;
 import com.FutureFitness.entity.Branch;
-import com.FutureFitness.entity.Staff;
 import com.FutureFitness.entity.SubscriptionPlan;
+import com.FutureFitness.entity.User;
 import com.FutureFitness.exception.ResourceNotFoundException;
 import com.FutureFitness.repository.BranchRepository;
-import com.FutureFitness.repository.StaffRepository;
 import com.FutureFitness.repository.SubscriptionPlanRepository;
+import com.FutureFitness.repository.UserRepository;
 import com.FutureFitness.service.SubscriptionPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,15 +21,15 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
 
     private final SubscriptionPlanRepository subscriptionPlanRepository;
     private final BranchRepository branchRepository;
-    private final StaffRepository staffRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public SubscriptionPlanServiceImpl(SubscriptionPlanRepository subscriptionPlanRepository,
                                       BranchRepository branchRepository,
-                                      StaffRepository staffRepository) {
+                                      UserRepository userRepository) {
         this.subscriptionPlanRepository = subscriptionPlanRepository;
         this.branchRepository = branchRepository;
-        this.staffRepository = staffRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -42,16 +42,16 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
                         subscriptionPlanRequestDTO.getBranchId())
                 );
 
-        // Fetch Staff by createdByStaffId
-        Staff createdByStaff = staffRepository.findById(subscriptionPlanRequestDTO.getCreatedByStaffId())
+        // Fetch User by createdByUserId
+        User createdByUser = userRepository.findById(subscriptionPlanRequestDTO.getCreatedByUserId())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Staff",
+                        "User",
                         "id",
-                        subscriptionPlanRequestDTO.getCreatedByStaffId())
+                        subscriptionPlanRequestDTO.getCreatedByUserId())
                 );
 
-        // Get the staff's role name
-        String staffRoleName = createdByStaff.getRole().getRoleName().name();
+        // Get the user's role name
+        String userRoleName = createdByUser.getRole().name();
 
         // Map the request DTO to SubscriptionPlan entity
         SubscriptionPlan subscriptionPlan = new SubscriptionPlan();
@@ -60,8 +60,8 @@ public class SubscriptionPlanServiceImpl implements SubscriptionPlanService {
         subscriptionPlan.setPrice(subscriptionPlanRequestDTO.getPrice());
         subscriptionPlan.setDuration(subscriptionPlanRequestDTO.getDuration());
         subscriptionPlan.setBranch(branch);
-        subscriptionPlan.setCreatedBy(createdByStaff); // Set the staff who created the plan
-        subscriptionPlan.setCreatedByRole(staffRoleName); // Store the staff's role name
+        subscriptionPlan.setCreatedBy(createdByUser); // Set the user who created the plan
+        subscriptionPlan.setCreatedByRole(userRoleName); // Store the user's role name
         subscriptionPlan.setUpdatedAt(LocalDateTime.now());
 
         // Save the subscription plan

@@ -36,7 +36,7 @@ public class BranchTiming {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
-    private Staff createdBy;
+    private User createdBy;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

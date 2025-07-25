@@ -16,5 +16,5 @@ public class SubscriptionPlanRequestDTO {
     private BigDecimal price;
     private Integer duration;
     private Long branchId;
-    private Long createdByStaffId; // Added field to track which staff created the plan
+    private Long createdByUserId; // Changed from createdByStaffId to createdByUserId
 }

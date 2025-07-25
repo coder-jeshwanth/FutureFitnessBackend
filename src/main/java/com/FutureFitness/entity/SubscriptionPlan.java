@@ -37,7 +37,7 @@ public class SubscriptionPlan {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
-    private Staff createdBy;
+    private User createdBy; // Changed from Staff to User
 
     @Column(name = "created_by_role")
     private String createdByRole; // Added this field to store the staff's role name

@@ -25,7 +25,7 @@ public class Class {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainer_id", nullable = false)
-    private Staff trainer; // Role should be TRAINER
+    private User trainer; // Changed from Staff to User - Role should be TRAINER
 
     @Column(nullable = false)
     private LocalDate startDate;
@@ -44,7 +44,7 @@ public class Class {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
-    private Staff createdBy;
+    private User createdBy;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;

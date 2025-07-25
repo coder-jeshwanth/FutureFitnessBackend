@@ -31,8 +31,8 @@ public class Payment {
     private BigDecimal amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user; // Changed from Member to User
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subscription_id")
@@ -40,7 +40,7 @@ public class Payment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trainer_id")
-    private Staff trainer;
+    private User trainer; // Changed from Staff to User
 
     @PrePersist
     protected void onCreate() {
