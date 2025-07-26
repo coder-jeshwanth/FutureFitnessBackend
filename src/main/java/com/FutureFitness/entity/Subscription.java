@@ -1,6 +1,5 @@
 package com.FutureFitness.entity;
 
-import com.FutureFitness.enums.SubscriptionStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,7 @@ public class Subscription {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // Changed from Member to User
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan_id", nullable = false)
@@ -36,8 +35,4 @@ public class Subscription {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SubscriptionStatus status;
 }

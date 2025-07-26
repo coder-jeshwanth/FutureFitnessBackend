@@ -11,6 +11,7 @@ import com.FutureFitness.repository.UserRepository;
 import com.FutureFitness.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,11 +24,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BranchRepository branchRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BranchRepository branchRepository) {
+    public UserServiceImpl(UserRepository userRepository, BranchRepository branchRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.branchRepository = branchRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -54,7 +57,8 @@ public class UserServiceImpl implements UserService {
         user.setName(userRequestDTO.getName());
         user.setEmail(userRequestDTO.getEmail());
         user.setPhone(userRequestDTO.getPhone());
-        user.setPassword(userRequestDTO.getPassword());
+        // Encrypt the password before saving
+        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         user.setRole(userRequestDTO.getRole());
         user.setBranch(branch);
         user.setCreatedAt(LocalDateTime.now());
